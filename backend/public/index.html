@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CareSync - Identity Gateway</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-container" style="max-width: 450px;">
+        <header style="justify-content: center;">
+            <div class="brand">🏥 CareSync Healthcare Portal</div>
+        </header>
+        <div class="card">
+            <h2 id="authTitle">Create Account</h2>
+            <form id="authForm">
+                <div class="form-group" id="nameGroup">
+                    <label>Full Name<span class="required-dot">*</span></label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address<span class="required-dot">*</span></label>
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="form-group">
+                    <label>Password<span class="required-dot">*</span></label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label>Account Role<span class="required-dot">*</span></label>
+                    <select id="role">
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" id="authBtn">Create Account</button>
+            </form>
+            <div style="margin-top: 15px; text-align: center; font-size: 0.9rem;">
+                <span id="toggleText">Already have an account?</span> 
+                <a href="#" id="toggleAuth" style="color: #58a6ff; text-decoration: none; font-weight: bold;">Login here</a>
+            </div>
+        </div>
+        <div class="footer">© 2026 CareSync • Healthcare Appointment Manager</div>
+    </div>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

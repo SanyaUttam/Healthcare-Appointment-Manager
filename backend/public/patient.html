@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CareSync - Patient Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="brand">🏥 CareSync</div>
+            <div class="nav-links">
+                <span id="patientNameDisplay">👤 Accessing Portal...</span>
+                <div class="status-badge">Patient Dashboard</div>
+            </div>
+        </header>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h2>📅 Book Appointment</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label>Filter by Specialization</label>
+                        <select id="specializationFilter">
+                            <option value="all">-- All Specializations --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Doctor<span class="required-dot">*</span></label>
+                        <select id="doctorId" required>
+                            <option value="" disabled selected>-- Select a Doctor --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Choose Appointment Date<span class="required-dot">*</span></label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Available Consultation Slots<span class="required-dot">*</span></label>
+                        <select id="timeSlot" required>
+                            <option value="" disabled selected>-- Select Date First --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Describe Current Symptoms & Medical History<span class="required-dot">*</span></label>
+                        <textarea id="symptoms" rows="3" placeholder="Provide details for automated AI Triage risk tracking..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Confirm Secure Booking</button>
+                </form>
+            </div>
+
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h2>📊 Booking Manifest Summary</h2>
+                    <div id="bookingStatusBox" class="console-output" style="display: none; background: #21262d; border-color: #30363d; margin-bottom: 1rem;">
+                        Awaiting input submission updates...
+                    </div>
+                    
+                    <div id="summaryCard" style="display: none;">
+                        <div class="summary-box">
+                            <div class="summary-item">
+                                <span class="summary-label">🩺 Medical Specialist:</span>
+                                <span class="summary-value" id="resDoctor">--</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">📅 Date:</span>
+                                <span class="summary-value" id="resDate">--</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">⏰ Time Slot:</span>
+                                <span class="summary-value" id="resTime">--</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">🚨 AI Urgency Status:</span>
+                                <span id="resUrgency" class="badge-normal">Normal</span>
+                            </div>
+                        </div>
+                        <div class="summary-box" style="border-left: 3px solid #58a6ff;">
+                            <label style="margin-bottom: 4px; display: block; font-weight: bold;">🤖 AI Clinical Guidance Summary</label>
+                            <div id="resGuidance" style="font-size: 0.95rem; color: #c9d1d9; line-height: 1.4;">...</div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="logout()" class="btn-secondary" style="margin-top: 1rem;">Logout</button>
+            </div>
+        </div>
+        <div class="footer">© 2026 CareSync • Healthcare Appointment Manager</div>
+    </div>
+    <script src="/js/patient.js"></script>
+</body>
+</html>

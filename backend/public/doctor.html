@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CareSync Engine - Clinical Portal</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="brand">✦ CARESYNC CLINICAL</div>
+            <div class="status-badge" style="color: #a78bfa; border-color: rgba(167,139,250,0.2); background: rgba(167,139,250,0.1);">Practitioner Portal Active</div>
+        </header>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h2>📋 Active Patient Consultation Manifest</h2>
+                <div style="max-height: 250px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #30363d; border-radius: 6px;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;" id="appointmentsTable">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #30363d; background: #161b22; color: #a78bfa;">
+                                <th style="padding: 10px;">Patient</th>
+                                <th style="padding: 10px;">Date</th>
+                                <th style="padding: 10px;">Slot</th>
+                                <th style="padding: 10px;">Symptoms</th>
+                                <th style="padding: 10px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentsList">
+                            </tbody>
+                    </table>
+                </div>
+
+                <h2>Post-Visit Clinical Log</h2>
+                <form id="postVisitForm">
+                    <div class="form-group">
+                        <label>Appointment Record Reference ID</label>
+                        <input type="text" id="appointmentId" placeholder="Select a patient from manifest grid above" required readonly style="background: #161b22; color: #8b949e;">
+                    </div>
+                    <div class="form-group">
+                        <label>Clinical Objective Findings</label>
+                        <textarea id="clinicalNotes" rows="3" placeholder="Enter objective evaluation notes..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Prescriptions & Treatment Regimen</label>
+                        <input type="text" id="prescriptions" placeholder="Amoxicillin 500mg TDS" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="background-color: #8b5cf6;">Commit Post-Visit Architecture Summary</button>
+                </form>
+            </div>
+            
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h2>🤖 Automated Pre-Visit AI Summary</h2>
+                    <div id="aiSummaryBox" class="summary-box" style="display: none; background: #161b22; border-left: 3px solid #ff7b72; margin-bottom: 15px;">
+                        <div style="margin-bottom: 8px;"><strong>🚨 AI Urgency Risk Status:</strong> <span id="aiUrgencyBadge" class="badge-high">Normal</span></div>
+                        <div><strong>📋 Summary Guidance:</strong></div>
+                        <p id="aiGuidanceText" style="font-size: 0.9rem; color: #c9d1d9; margin: 4px 0 0 0; line-height: 1.4;"></p>
+                    </div>
+                    
+                    <h2>System Processing Payload</h2>
+                    <div id="doctorConsole" class="console-output" style="color: #a78bfa; font-family: monospace; white-space: pre-wrap; font-size: 0.85rem;">Awaiting manifest record target selection...</div>
+                </div>
+                <button onclick="logout()" class="btn-secondary" style="margin-top: 1rem;">Terminate Session</button>
+            </div>
+        </div>
+        <div class="footer">© 2026 CareSync • Healthcare Appointment Manager</div>
+    </div>
+    <script src="/js/doctor.js"></script>
+</body>
+</html>

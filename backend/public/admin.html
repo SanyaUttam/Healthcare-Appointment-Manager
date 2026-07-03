@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CareSync - System Admin Portal</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-container" style="max-width: 1400px; width: 98%;">
+        <header>
+            <div class="brand">🛡️ CARESYNC SYSTEM ADMINISTRATION</div>
+            <div class="status-badge" style="color: #f85149; border-color: rgba(248,81,73,0.2); background: rgba(248,81,73,0.1);">Master Access Privilege Enabled</div>
+        </header>
+        
+        <div style="display: grid; grid-template-columns: 360px 1fr; gap: 24px; align-items: start;">
+            <div>
+                <div class="card" style="margin-bottom: 20px;">
+                    <h2>➕ Create Doctor Profile</h2>
+                    <form id="addDoctorForm">
+                        <div class="form-group">
+                            <label>Doctor Full Name *</label>
+                            <input type="text" id="docName" placeholder="e.g., Dr. Rahul Mehta" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Specialization *</label>
+                            <select id="docSpec" required>
+                                <option value="" disabled selected>-- Choose Field --</option>
+                                <option value="General Physician">General Physician</option>
+                                <option value="Cardiologist">Cardiologist</option>
+                                <option value="Dermatologist">Dermatologist</option>
+                                <option value="Pediatrician">Pediatrician</option>
+                                <option value="Neurologist">Neurologist</option>
+                                <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                                <option value="Ophthalmologist">Ophthalmologist</option>
+                                <option value="Gastroenterologist">Gastroenterologist</option>
+                                <option value="Psychiatrist">Psychiatrist</option>
+                                <option value="Endocrinologist">Endocrinologist</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div>
+                                <label>Hours Start *</label>
+                                <input type="time" id="workStart" value="10:00" required>
+                            </div>
+                            <div>
+                                <label>Hours End *</label>
+                                <input type="time" id="workEnd" value="18:00" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Slot Duration (Min) *</label>
+                            <input type="number" id="slotDuration" value="30" min="15" max="120" required>
+                        </div>
+                        <button type="submit" class="btn-primary" style="background-color: #2ea44f;">Save Doctor Profile</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2>📅 Schedule Doctor Leave</h2>
+                    <p style="font-size: 0.85rem; color: #8b949e; margin-bottom: 15px; margin-top: -5px;">
+                        Select a doctor from the registry matrix on the right to block off a vacation day or emergency leave.
+                    </p>
+                    <form id="leaveForm">
+                        <div class="form-group">
+                            <label>Selected Doctor Name</label>
+                            <input type="hidden" id="leaveDocId">
+                            <input type="text" id="leaveDocNameDisplay" placeholder="Click 'Select' next to a practitioner's name..." readonly style="background: #161b22; color: #f0f6fc; border-color: #30363d; cursor: not-allowed; font-weight: 500;">
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Absence *</label>
+                            <input type="date" id="leaveDate" required>
+                        </div>
+                        <button type="submit" class="btn-secondary" style="color: #ff7b72; border-color: rgba(245,81,73,0.3); background: rgba(245,81,73,0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(245,81,73,0.1)'" onmouseout="this.style.background='rgba(245,81,73,0.05)'">
+                            Cancel Appointments & Block Slots
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                <div class="card">
+                    <h2>👥 Professional Registry Matrix</h2>
+                    <div style="max-height: 300px; overflow-y: auto; border: 1px solid #30363d; border-radius: 6px; background: #0d1117;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #30363d; background: #161b22; color: #58a6ff;">
+                                    <th style="padding: 12px;">Doctor Profile Details</th>
+                                    <th style="padding: 12px;">Specialization</th>
+                                    <th style="padding: 12px; text-align: center;">Actions Suite</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminDoctorsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📋 Global Booked Slots & Patient Matrix</h2>
+                    <div style="max-height: 350px; overflow-y: auto; border: 1px solid #30363d; border-radius: 6px; background: #0d1117;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #30363d; background: #161b22; color: #58a6ff;">
+                                    <th style="padding: 12px;">Patient Details</th>
+                                    <th style="padding: 12px;">Assigned Practitioner</th>
+                                    <th style="padding: 12px;">Schedule Target</th>
+                                    <th style="padding: 12px;">AI Urgency Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminAppointmentsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #161b22; padding: 15px; border: 1px solid #30363d; border-radius: 6px;">
+                    <div id="adminConsole" style="font-family: monospace; font-size: 0.8rem; color: #8b949e;">
+                        System standing by. Security vectors validated.
+                    </div>
+                    <button onclick="logout()" class="btn-secondary" style="width: auto; padding: 8px 16px;">Terminate Session</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer" style="margin-top: 24px;">© 2026 CareSync • Healthcare Appointment Manager</div>
+    </div>
+    
+    <script>
+        const token = localStorage.getItem('authToken');
+        if (!token || localStorage.getItem('userRole') !== 'admin') {
+            window.location.href = '/';
+        }
+
+        async function fetchSystemDoctors() {
+            const tbody = document.getElementById('adminDoctorsList');
+            tbody.innerHTML = "";
+            try {
+                const res = await fetch('/api/doctors', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const doctors = await res.json();
+                    if (!doctors || doctors.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="3" style="padding: 20px; text-align: center; color: #8b949e;">No active profiles saved in the backend collection database.</td></tr>`;
+                        return;
+                    }
+                    doctors.forEach(doc => {
+                        const tr = document.createElement('tr');
+                        tr.style.borderBottom = "1px solid #21262d";
+                        tr.innerHTML = `
+                            <td style="padding: 12px;">
+                                <div style="font-weight: bold; color: #f0f6fc;">Dr. ${doc.name}</div>
+                                <div style="font-size: 0.75rem; color: #8b949e; font-family: monospace;">ID: ${doc._id || doc.id}</div>
+                            </td>
+                            <td style="padding: 12px;"><span class="badge-normal">${doc.specialization}</span></td>
+                            <td style="padding: 12px; text-align: center;">
+                                <button class="btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; display: inline-block; width: auto; margin-right: 6px; background-color: #1f6feb; border-color: #388bfd; color: #fff;" onclick="selectForLeave('${doc._id || doc.id}', '${doc.name}')">Select</button>
+                                <button class="btn-secondary" style="padding: 4px 8px; font-size: 0.75rem; display: inline-block; width: auto; color: #f85149; border-color: rgba(248,81,73,0.2);" onclick="removeDoctor('${doc._id || doc.id}', '${doc.name}')">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                document.getElementById('adminConsole').innerText = `Sync Error: ${err.message}`;
+            }
+        }
+
+        async function removeDoctor(id, name) {
+            if (!confirm(`Are you certain you want to permanently delete Dr. ${name} and clear their profile metadata?`)) return;
+            try {
+                const res = await fetch(`/api/doctors/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    document.getElementById('adminConsole').innerText = `Profile successfully purged: Dr. ${name}.`;
+                    
+                    if (document.getElementById('leaveDocId').value === id) {
+                        document.getElementById('leaveDocId').value = "";
+                        document.getElementById('leaveDocNameDisplay').value = "";
+                    }
+                    
+                    fetchSystemDoctors();
+                } else {
+                    document.getElementById('adminConsole').innerText = `Failed executing profile termination pipeline.`;
+                }
+            } catch (err) {
+                alert("Error sending transmission execution script: " + err.message);
+            }
+        }
+
+        async function fetchAllAppointments() {
+            const tbody = document.getElementById('adminAppointmentsList');
+            tbody.innerHTML = "";
+            try {
+                const res = await fetch('/api/appointments', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const appointments = await res.json();
+                    if (!appointments || appointments.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: #8b949e;">No booked slots or appointment records detected across system channels.</td></tr>`;
+                        return;
+                    }
+                    appointments.forEach(app => {
+                        const patientName = app.patientId?.name || app.patientName || "System Patient";
+                        const patientEmail = app.patientId?.email || "N/A";
+                        const docName = app.doctorId?.name || "System Doctor";
+                        const urgency = app.aiPreVisitSummary?.urgencyLevel || "Normal";
+                        
+                        const tr = document.createElement('tr');
+                        tr.style.borderBottom = "1px solid #21262d";
+                        tr.innerHTML = `
+                            <td style="padding: 12px;">
+                                <div style="font-weight: bold; color: #f0f6fc;">${patientName}</div>
+                                <div style="font-size: 0.75rem; color: #8b949e;">${patientEmail}</div>
+                            </td>
+                            <td style="padding: 12px; color: #c9d1d9;">Dr. ${docName}</td>
+                            <td style="padding: 12px;">
+                                <div style="color: #f0f6fc; font-weight: bold;">${app.date}</div>
+                                <div style="font-size: 0.75rem; color: #8b949e;">${app.timeSlot}</div>
+                            </td>
+                            <td style="padding: 12px;">
+                                <span class="${urgency === 'High' ? 'badge-high' : 'badge-normal'}">${urgency}</span>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: #8b949e;">Unable to parse appointment records. Check server connection parameters.</td></tr>`;
+                }
+            } catch (err) {
+                document.getElementById('adminConsole').innerText = `Data parsing mismatch: ${err.message}`;
+            }
+        }
+
+        function selectForLeave(id, name) {
+            document.getElementById('leaveDocId').value = id;
+            document.getElementById('leaveDocNameDisplay').value = `Dr. ${name}`;
+            document.getElementById('adminConsole').innerText = `Ready to manage leave configuration scheduling for Dr. ${name}.`;
+        }
+
+        document.getElementById('addDoctorForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('docName').value.replace('Dr. ', ''),
+                specialization: document.getElementById('docSpec').value,
+                workingHours: {
+                    start: document.getElementById('workStart').value,
+                    end: document.getElementById('workEnd').value
+                },
+                slotDuration: parseInt(document.getElementById('slotDuration').value)
+            };
+            try {
+                const res = await fetch('/api/doctors/profile', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    document.getElementById('adminConsole').innerText = `Profile Created successfully for Dr. ${payload.name}`;
+                    document.getElementById('addDoctorForm').reset();
+                    fetchSystemDoctors();
+                }
+            } catch (err) {
+                document.getElementById('adminConsole').innerText = `Error saving profile: ${err.message}`;
+            }
+        });
+
+        document.getElementById('leaveForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const docId = document.getElementById('leaveDocId').value;
+            const leaveDate = document.getElementById('leaveDate').value;
+            if (!docId) {
+                alert("Please pick a doctor from the matrix table before committing an absence record.");
+                return;
+            }
+            try {
+                const res = await fetch(`/api/doctors/${docId}/leave`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ leaveDate })
+                });
+                if (res.ok) {
+                    alert("Leave configuration processed successfully.");
+                    document.getElementById('leaveForm').reset();
+                    document.getElementById('leaveDocId').value = "";
+                    document.getElementById('leaveDocNameDisplay').value = "";
+                    fetchAllAppointments();
+                }
+            } catch (err) {
+                alert("Error sending leave payload context parameters.");
+            }
+        });
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
+        window.onload = () => {
+            fetchSystemDoctors();
+            fetchAllAppointments();
+        };
+    </script>
+</body>
+</html>
