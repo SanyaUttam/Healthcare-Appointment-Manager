@@ -38,7 +38,7 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
         payload.name = nameInput.value;
     }
 
-    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+    const endpoint = isLogin ? '/https://healthcare-appointment-manager-stjl.onrender.com/auth/login' : '/https://healthcare-appointment-manager-stjl.onrender.com/auth/register';
 
     try {
         const response = await fetch(endpoint, {
